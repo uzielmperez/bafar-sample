@@ -1,0 +1,2100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Grupo Bafar — Redesign demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --navy: #0e2a47;
+        --navy-2: #1e3d5e;
+        --navy-3: #163454;
+        --red: #c8102e;
+        --red-hover: #a80d26;
+        --red-light: #ff6b7f;
+        --ink: #0e2a47;
+        --body: #3b4c5e;
+        --muted: #5b6b7c;
+        --line: #e3e7ec;
+        --tint: #f4f6f9;
+        --white: #fff;
+        --on-navy: #c9d3de;
+        --on-navy-muted: #8fa0b3;
+        --max: 1240px;
+        --radius: 6px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        font-family: "Archivo", system-ui, sans-serif;
+        color: var(--ink);
+        background: var(--white);
+        -webkit-font-smoothing: antialiased;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+      }
+      a {
+        color: inherit;
+      }
+      .wrap {
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      .eyebrow {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 48px;
+        padding: 0 24px;
+        border-radius: 4px;
+        font-weight: 600;
+        text-decoration: none;
+        transition:
+          background 0.15s,
+          color 0.15s,
+          border-color 0.15s;
+      }
+      .btn-red {
+        background: var(--red);
+        color: #fff;
+      }
+      .btn-red:hover {
+        background: var(--red-hover);
+      }
+      .btn-ghost {
+        border: 1.5px solid #fff;
+        color: #fff;
+      }
+      .btn-ghost:hover {
+        background: #fff;
+        color: var(--navy);
+      }
+      .btn-navy {
+        background: var(--navy);
+        color: #fff;
+      }
+      .btn-navy:hover {
+        background: var(--navy-2);
+      }
+      .skip {
+        position: absolute;
+        left: -9999px;
+        top: 8px;
+        background: #fff;
+        color: var(--navy);
+        padding: 10px 14px;
+        z-index: 100;
+      }
+      .skip:focus {
+        left: 8px;
+      }
+      :focus-visible {
+        outline: 3px solid var(--red-light);
+        outline-offset: 2px;
+      }
+
+      /* ---------- Header ---------- */
+      .site-header {
+        background: var(--navy);
+        color: #fff;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        border-bottom: 1px solid var(--navy-2);
+      }
+      .header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        min-height: 76px;
+      }
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        font-size: 22px;
+        letter-spacing: 0.02em;
+        line-height: 1;
+        text-decoration: none;
+        color: #fff;
+        white-space: nowrap;
+      }
+      /* The mark: sized to sit slightly taller than the wordmark's caps,
+         separated by a thin divider so the two read as one lockup */
+      .logo-mark {
+        width: 40px;
+        height: 40px;
+        flex: none;
+        color: #fff;
+        transition: color 0.15s;
+      }
+      .logo-word {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.28em;
+        padding-left: 12px;
+        border-left: 1px solid rgba(255, 255, 255, 0.22);
+        height: 26px;
+      }
+      .logo-word > span {
+        color: var(--red-light);
+      }
+      .logo:hover .logo-mark {
+        color: var(--red-light);
+      }
+      @media (max-width: 480px) {
+        .logo {
+          gap: 10px;
+          font-size: 19px;
+        }
+        .logo-mark {
+          width: 34px;
+          height: 34px;
+        }
+        .logo-word {
+          padding-left: 10px;
+          height: 22px;
+        }
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .nav > ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 4px;
+      }
+      .nav li {
+        position: relative;
+      }
+      .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 44px;
+        padding: 0 12px;
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--on-navy);
+        text-decoration: none;
+        border-bottom: 2px solid transparent;
+      }
+      .nav-link:hover,
+      .nav li:focus-within > .nav-link {
+        color: #fff;
+      }
+      .nav-link svg {
+        width: 10px;
+        height: 10px;
+        opacity: 0.7;
+      }
+      .dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 260px;
+        background: #fff;
+        border-radius: var(--radius);
+        box-shadow: 0 12px 32px rgba(14, 42, 71, 0.18);
+        padding: 8px;
+        list-style: none;
+        margin: 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(6px);
+        transition: all 0.15s;
+      }
+      .nav li:hover > .dropdown,
+      .nav li:focus-within > .dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+      }
+      .dropdown a {
+        display: block;
+        padding: 10px 14px;
+        border-radius: 4px;
+        color: var(--ink);
+        text-decoration: none;
+        font-size: 15px;
+      }
+      .dropdown a:hover {
+        background: var(--tint);
+        color: var(--red);
+      }
+      .lang {
+        display: flex;
+        gap: 2px;
+        margin-left: 12px;
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .lang a {
+        padding: 8px 8px;
+        text-decoration: none;
+        color: var(--on-navy-muted);
+      }
+      .lang a[aria-current] {
+        color: #fff;
+      }
+      .menu-btn {
+        display: none;
+        background: none;
+        border: 0;
+        color: #fff;
+        width: 44px;
+        height: 44px;
+        cursor: pointer;
+      }
+      .menu-btn svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      @media (max-width: 1060px) {
+        .menu-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .nav {
+          position: fixed;
+          inset: 77px 0 0 0;
+          background: var(--navy);
+          flex-direction: column;
+          align-items: stretch;
+          padding: 16px 24px 40px;
+          overflow: auto;
+          display: none;
+        }
+        .nav.open {
+          display: flex;
+        }
+        .nav > ul {
+          flex-direction: column;
+        }
+        .nav-link {
+          font-size: 18px;
+          min-height: 52px;
+          border-bottom: 1px solid var(--navy-2);
+        }
+        .dropdown {
+          position: static;
+          opacity: 1;
+          visibility: visible;
+          transform: none;
+          box-shadow: none;
+          background: transparent;
+          padding: 0 0 8px 12px;
+          display: none;
+        }
+        .nav li.expanded > .dropdown {
+          display: block;
+        }
+        .dropdown a {
+          color: var(--on-navy);
+        }
+        .dropdown a:hover {
+          background: var(--navy-2);
+          color: #fff;
+        }
+        .lang {
+          margin: 16px 0 0;
+        }
+      }
+
+      /* ---------- Hero (1a navy · contained) ---------- */
+      .hero {
+        background: var(--navy);
+        color: #fff;
+        padding: 72px 0 48px;
+      }
+      /* Stacked wide: headline row on top, full-width image below */
+      .hero-top {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+        gap: 48px;
+        align-items: end;
+        margin-bottom: 40px;
+      }
+      .hero-copy {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+      }
+      .hero .eyebrow {
+        color: var(--red-light);
+      }
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(42px, 5.2vw, 68px);
+        line-height: 1.02;
+        font-weight: 800;
+        letter-spacing: -0.025em;
+      }
+      .hero p.lede {
+        margin: 0;
+        font-size: 19px;
+        line-height: 1.6;
+        color: var(--on-navy);
+        max-width: 500px;
+      }
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      /* All slides share one grid cell, so the box takes the tallest
+         image's height and nothing shifts when slides change.
+         Images keep their own shape — no cropping. */
+      .hero-media {
+        display: grid;
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: var(--navy-2);
+      }
+      .hero-slide {
+        grid-area: 1 / 1;
+        opacity: 0;
+        transition: opacity 0.6s ease;
+      }
+      .hero-slide.active {
+        opacity: 1;
+      }
+      .hero-slide img {
+        width: 100%;
+        height: auto;
+      }
+      .hero-tabs {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        border-top: 1px solid var(--navy-2);
+        margin-top: 36px;
+      }
+      .hero-tabs button {
+        background: none;
+        border: 0;
+        border-top: 3px solid transparent;
+        margin-top: -2px;
+        color: var(--on-navy);
+        font-family: "Archivo", sans-serif;
+        padding: 20px 16px 4px 0;
+        cursor: pointer;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-height: 56px;
+      }
+      .hero-tabs button[aria-selected="true"] {
+        border-top-color: var(--red);
+        color: #fff;
+      }
+      .hero-tabs .num {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--red-light);
+      }
+      .hero-tabs .lbl {
+        font-size: 17px;
+        font-weight: 700;
+      }
+      .hero-tabs .sub {
+        font-size: 14px;
+        color: var(--on-navy-muted);
+      }
+      .hero-tabs button:hover .lbl {
+        color: #fff;
+      }
+      .hero-more {
+        margin-top: 20px;
+        display: flex;
+        justify-content: flex-end;
+      }
+      .hero-more a {
+        font-weight: 600;
+        font-size: 15px;
+        color: #fff;
+      }
+      .hero-more a:hover {
+        color: var(--red-light);
+      }
+      @media (max-width: 900px) {
+        .hero {
+          padding: 48px 0 32px;
+        }
+        .hero-top {
+          grid-template-columns: 1fr;
+          gap: 22px;
+          margin-bottom: 32px;
+        }
+        .hero-tabs {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          margin-top: 28px;
+        }
+        .hero-more {
+          justify-content: flex-start;
+        }
+      }
+
+      /* ---------- Quick links ---------- */
+      .quick {
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        background: var(--tint);
+      }
+      .quick-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 36px;
+        align-items: center;
+      }
+      .quick-row .label {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding: 20px 0;
+      }
+      .quick-row a {
+        padding: 20px 0;
+        text-decoration: none;
+        font-weight: 600;
+        border-bottom: 3px solid transparent;
+      }
+      .quick-row a:hover {
+        border-bottom-color: var(--red);
+        color: var(--red);
+      }
+
+      /* ---------- Intro ---------- */
+      .intro {
+        padding: 96px 0;
+      }
+      .intro-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+        gap: 64px;
+      }
+      .intro h2 {
+        margin: 0;
+        font-size: clamp(30px, 3.2vw, 40px);
+        line-height: 1.12;
+        font-weight: 800;
+      }
+      .intro .eyebrow {
+        color: var(--red);
+        margin-bottom: 16px;
+      }
+      .intro-body {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        font-size: 18px;
+        line-height: 1.7;
+        color: var(--body);
+      }
+      .intro-body p {
+        margin: 0;
+      }
+      .pillars {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 32px;
+        margin-top: 72px;
+        padding-top: 40px;
+        border-top: 1px solid var(--line);
+      }
+      .pillar .n {
+        font-size: 36px;
+        font-weight: 800;
+        color: var(--red);
+        line-height: 1;
+      }
+      .pillar h3 {
+        margin: 14px 0 8px;
+        font-size: 19px;
+      }
+      .pillar p {
+        margin: 0;
+        line-height: 1.6;
+        color: var(--body);
+        font-size: 15px;
+      }
+      @media (max-width: 900px) {
+        .intro-grid {
+          grid-template-columns: 1fr;
+          gap: 28px;
+        }
+        .pillars {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 520px) {
+        .pillars {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ---------- Section heads ---------- */
+      .section {
+        padding: 88px 0;
+      }
+      .section-head {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: end;
+        gap: 16px;
+        margin-bottom: 36px;
+      }
+      .section-head h2 {
+        margin: 0;
+        font-size: clamp(28px, 3vw, 38px);
+        font-weight: 800;
+      }
+      .section-head a {
+        font-weight: 600;
+        color: var(--ink);
+      }
+      .section-head a:hover {
+        color: var(--red);
+      }
+
+      /* ---------- Business units ---------- */
+      .units {
+        background: var(--tint);
+      }
+      .unit-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 20px;
+      }
+      .unit {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+      .unit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 14px 30px rgba(14, 42, 71, 0.12);
+      }
+      .unit-img {
+        aspect-ratio: 16/10;
+        background: var(--navy-2);
+        overflow: hidden;
+      }
+      .unit-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .unit-body {
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        flex: 1;
+      }
+      .unit-body h3 {
+        margin: 0;
+        font-size: 20px;
+      }
+      .unit-body p {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.55;
+        color: var(--body);
+        flex: 1;
+      }
+      .unit-body .more {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--red);
+      }
+      @media (max-width: 1000px) {
+        .unit-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 560px) {
+        .unit-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ---------- News ---------- */
+      .news-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 24px;
+      }
+      .news-side {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+      .news {
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: #fff;
+      }
+      .news:hover h3 {
+        color: var(--red);
+      }
+      .news-img {
+        background: var(--tint);
+        overflow: hidden;
+      }
+      .news-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .news.feature .news-img {
+        aspect-ratio: 16/9;
+      }
+      .news.small {
+        flex-direction: row;
+      }
+      .news.small .news-img {
+        flex: 0 0 42%;
+        min-height: 170px;
+      }
+      .news-body {
+        padding: 22px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .news-body time {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .news-body h3 {
+        margin: 0;
+        font-size: 20px;
+        line-height: 1.3;
+        transition: color 0.15s;
+      }
+      .news.feature h3 {
+        font-size: 26px;
+      }
+      .news-body p {
+        margin: 0;
+        color: var(--body);
+        line-height: 1.6;
+      }
+      .facts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        margin-top: 6px;
+      }
+      .facts div {
+        display: flex;
+        flex-direction: column;
+      }
+      .facts strong {
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--navy);
+      }
+      .facts span {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      @media (max-width: 900px) {
+        .news-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 520px) {
+        .news.small {
+          flex-direction: column;
+        }
+        .news.small .news-img {
+          aspect-ratio: 16/9;
+          min-height: 0;
+        }
+      }
+
+      /* ---------- Brands ---------- */
+      .brands {
+        border-top: 1px solid var(--line);
+      }
+      .brand-group {
+        margin-bottom: 36px;
+      }
+      .brand-group h3 {
+        margin: 0 0 14px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .brand-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 1px;
+        background: var(--line);
+        border: 1px solid var(--line);
+      }
+      .brand-grid.retail {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .brand-grid a {
+        position: relative;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        padding: 28px 16px 22px;
+        text-decoration: none;
+        transition: background 0.15s;
+      }
+      /* Every logo gets the same box, so mixed shapes
+         (square badges, wide wordmarks) line up evenly */
+      .brand-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 88px;
+      }
+      .brand-logo img {
+        max-width: 140px;
+        max-height: 88px;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        /* Greyed out and light at rest, full color on hover/focus */
+        filter: grayscale(1);
+        opacity: 0.5;
+        transition:
+          transform 0.25s ease,
+          filter 0.3s ease,
+          opacity 0.3s ease;
+      }
+      .brand-name {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        transition: color 0.15s;
+      }
+      .brand-grid a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 3px;
+        background: var(--red);
+        transform: scaleX(0);
+        transition: transform 0.2s ease;
+      }
+      .brand-grid a:hover {
+        background: var(--tint);
+      }
+      .brand-grid a:hover .brand-logo img,
+      .brand-grid a:focus-visible .brand-logo img {
+        transform: scale(1.06);
+        filter: grayscale(0);
+        opacity: 1;
+      }
+      /* Touch screens can't hover, so show logos in color there */
+      @media (hover: none) {
+        .brand-logo img {
+          filter: none;
+          opacity: 1;
+        }
+      }
+      .brand-grid a:hover .brand-name {
+        color: var(--ink);
+      }
+      .brand-grid a:hover::after,
+      .brand-grid a:focus-visible::after {
+        transform: scaleX(1);
+      }
+      @media (max-width: 800px) {
+        .brand-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .brand-grid.retail {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .brand-logo {
+          height: 72px;
+        }
+        .brand-logo img {
+          max-width: 120px;
+          max-height: 72px;
+        }
+      }
+
+      /* ---------- Responsibility ---------- */
+      .csr {
+        background: var(--navy);
+        color: #fff;
+      }
+      .csr-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 56px;
+        align-items: center;
+      }
+      .csr-img {
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: var(--navy-2);
+        aspect-ratio: 16/10;
+      }
+      .csr-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .csr .eyebrow {
+        color: var(--red-light);
+      }
+      .csr h2 {
+        margin: 14px 0 16px;
+        font-size: clamp(28px, 3vw, 40px);
+        font-weight: 800;
+        line-height: 1.12;
+      }
+      .csr p {
+        margin: 0 0 24px;
+        color: var(--on-navy);
+        line-height: 1.65;
+        font-size: 17px;
+      }
+      .csr-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border-top: 1px solid var(--navy-2);
+      }
+      .csr-list a {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 58px;
+        border-bottom: 1px solid var(--navy-2);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 17px;
+      }
+      .csr-list a:hover {
+        color: var(--red-light);
+      }
+      @media (max-width: 900px) {
+        .csr-grid {
+          grid-template-columns: 1fr;
+          gap: 36px;
+        }
+      }
+
+      /* ---------- Contact ---------- */
+      .contact-band {
+        padding: 72px 0;
+      }
+      .contact-card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 44px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 28px;
+      }
+      .contact-card h2 {
+        margin: 0 0 8px;
+        font-size: 30px;
+        font-weight: 800;
+      }
+      .contact-card p {
+        margin: 0;
+        color: var(--body);
+        font-size: 17px;
+      }
+      .contact-lines {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .contact-lines a {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 48px;
+        padding: 0 20px;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .contact-lines a:hover {
+        border-color: var(--navy);
+      }
+      .contact-lines svg {
+        width: 18px;
+        height: 18px;
+        color: var(--red);
+      }
+
+      /* ---------- Footer ---------- */
+      footer {
+        background: var(--navy);
+        color: var(--on-navy);
+      }
+      .foot-grid {
+        display: grid;
+        grid-template-columns: 1.3fr repeat(3, 1fr);
+        gap: 40px;
+        padding: 64px 0 40px;
+      }
+      .foot-grid h4 {
+        margin: 0 0 14px;
+        font-size: 13px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #fff;
+      }
+      .foot-grid ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .foot-grid a {
+        text-decoration: none;
+        font-size: 15px;
+      }
+      .foot-grid a:hover {
+        color: #fff;
+      }
+      .foot-brand p {
+        margin: 12px 0 0;
+        line-height: 1.6;
+        font-size: 15px;
+        max-width: 320px;
+      }
+      .foot-bottom {
+        border-top: 1px solid var(--navy-2);
+        padding: 22px 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 16px;
+        font-size: 14px;
+        color: var(--on-navy-muted);
+      }
+      .foot-bottom a {
+        text-decoration: none;
+      }
+      .foot-bottom a:hover {
+        color: #fff;
+      }
+      @media (max-width: 800px) {
+        .foot-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 480px) {
+        .foot-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <svg
+      aria-hidden="true"
+      style="position: absolute; width: 0; height: 0; overflow: hidden"
+    >
+      <symbol id="bafar-mark" viewBox="58 49 200 196">
+        <path
+          fill="currentColor"
+          fill-rule="evenodd"
+          d="M167.31 243.96 C166.68 243.65 164.07 241.11 163.31 240.06 C163.11 239.79 162.62 239.17 162.22 238.69 C161.58 237.93 161.02 237.05 160.22 235.59 C159.84 234.89 158.88 232.28 158.68 231.41 C158.57 230.94 158.37 230.22 158.22 229.81 C157.99 229.13 157.97 228.74 157.95 225.56 C157.94 222.72 157.98 221.81 158.16 220.69 C158.88 216.33 159.06 213.65 158.74 212.14 C158.56 211.31 158.15 210.70 157.72 210.65 C157.25 210.59 157.05 210.97 156.82 212.34 C156.71 212.97 156.45 213.88 156.25 214.36 C156.04 214.84 155.81 215.52 155.74 215.88 C155.64 216.32 155.43 216.73 155.06 217.19 C154.76 217.56 154.31 218.27 154.05 218.77 C153.44 219.98 151.85 221.56 150.27 222.54 C149.63 222.94 148.77 223.52 148.34 223.83 C147.29 224.60 146.61 224.93 145.51 225.17 C145.01 225.28 144.30 225.54 143.94 225.75 C143.59 225.95 142.90 226.21 142.43 226.31 C141.95 226.42 141.34 226.60 141.06 226.71 C140.49 226.93 138.56 227.44 136.19 228.00 C135.29 228.21 134.31 228.46 134.00 228.56 C133.69 228.66 132.81 228.89 132.04 229.06 C131.27 229.22 130.37 229.50 130.04 229.66 C129.71 229.83 129.04 230.05 128.56 230.16 C127.96 230.29 126.85 230.78 125.00 231.70 C122.55 232.94 122.23 233.14 121.35 233.98 C120.70 234.60 120.14 235.30 119.63 236.12 C118.49 237.98 117.78 238.47 116.82 238.07 C116.09 237.77 115.96 237.30 115.95 234.94 C115.93 231.90 116.14 230.94 117.37 228.44 C118.48 226.18 119.01 225.49 121.75 222.75 C123.85 220.65 125.54 219.20 126.85 218.39 C128.13 217.59 131.80 214.84 133.12 213.67 C135.37 211.71 135.96 211.14 137.10 209.79 C138.62 208.00 139.08 207.15 139.32 205.68 C139.50 204.52 139.48 204.21 139.15 203.84 C138.93 203.59 138.31 203.56 137.93 203.79 C137.65 203.95 136.72 204.73 135.39 205.92 C134.37 206.84 129.91 210.19 129.06 210.68 C128.72 210.88 127.98 211.37 127.43 211.77 C126.03 212.78 117.96 216.80 116.96 216.99 C116.56 217.06 115.85 217.26 115.38 217.43 C114.22 217.85 111.65 218.37 110.78 218.38 C110.39 218.38 109.58 218.46 109.00 218.56 C107.84 218.77 105.24 218.80 104.44 218.63 C104.16 218.57 103.46 218.43 102.88 218.31 C99.58 217.67 99.30 217.57 96.65 216.24 C93.94 214.87 93.34 214.41 93.18 213.59 C93.07 212.98 93.37 212.45 93.96 212.22 C94.22 212.12 95.00 211.93 95.69 211.81 C96.38 211.69 97.39 211.47 97.94 211.31 C98.49 211.15 99.53 210.90 100.25 210.74 C100.97 210.59 101.96 210.28 102.45 210.05 C102.94 209.83 103.93 209.47 104.64 209.25 C106.08 208.81 107.16 208.27 108.38 207.38 C108.82 207.05 109.58 206.54 110.06 206.25 C110.64 205.91 111.54 205.12 112.70 203.98 C114.43 202.26 114.48 202.19 115.18 200.75 C115.96 199.14 116.16 198.18 115.88 197.34 C115.54 196.29 114.90 195.88 113.11 195.58 C111.80 195.36 108.31 195.31 107.44 195.49 C106.85 195.62 105.31 195.94 104.00 196.20 C103.48 196.31 102.61 196.52 102.06 196.68 C101.51 196.85 100.47 197.10 99.75 197.26 C99.03 197.41 98.21 197.63 97.94 197.75 C97.66 197.87 97.04 198.05 96.56 198.16 C96.06 198.27 94.99 198.70 94.06 199.16 C93.15 199.62 92.11 200.03 91.69 200.12 C90.82 200.29 88.43 201.41 87.25 202.19 C86.80 202.48 86.10 202.89 85.69 203.09 C85.28 203.29 84.46 203.77 83.88 204.15 C83.29 204.53 82.29 205.08 81.65 205.37 C80.35 205.96 79.88 205.98 79.38 205.45 C78.76 204.78 78.82 204.06 79.73 201.00 C80.01 200.07 80.27 199.10 80.32 198.84 C80.47 198.02 82.21 194.63 82.88 193.86 C83.21 193.48 83.66 192.87 83.87 192.51 C84.81 190.91 86.15 189.57 88.11 188.25 C88.57 187.94 89.32 187.41 89.79 187.08 C90.98 186.22 95.38 184.07 96.31 183.88 C97.48 183.66 100.37 182.16 101.51 181.19 C102.03 180.75 102.56 180.18 102.70 179.93 L102.94 179.48 L102.64 179.24 C102.23 178.90 101.81 178.94 100.36 179.44 C97.56 180.40 93.24 180.32 90.67 179.25 C90.18 179.04 89.49 178.82 89.14 178.74 C88.78 178.66 88.23 178.41 87.84 178.13 C87.47 177.86 86.86 177.50 86.49 177.32 C85.18 176.69 81.19 173.38 79.26 171.32 C77.14 169.06 73.05 164.98 72.12 164.22 C71.54 163.73 70.64 162.93 70.12 162.43 C69.28 161.60 68.97 161.40 66.93 160.39 C64.39 159.13 63.55 158.90 61.12 158.76 C59.55 158.67 59.34 158.59 58.77 157.94 C58.48 157.61 58.38 157.37 58.38 157.02 C58.38 156.46 58.73 156.08 60.44 154.84 C62.09 153.65 63.17 153.14 64.41 152.99 C64.98 152.92 65.66 152.81 65.94 152.75 C66.90 152.52 70.36 152.60 71.68 152.87 C72.35 153.01 73.25 153.18 73.68 153.25 C74.11 153.32 74.79 153.51 75.17 153.69 C75.56 153.86 76.26 154.09 76.72 154.20 C77.18 154.31 78.18 154.70 78.94 155.06 C80.98 156.05 83.46 157.11 84.38 157.40 C84.82 157.54 85.78 157.95 86.50 158.32 C87.22 158.68 88.18 159.07 88.62 159.19 C89.07 159.30 89.92 159.58 90.50 159.81 C91.98 160.38 93.91 160.67 95.88 160.60 C97.23 160.55 97.53 160.50 98.15 160.21 C99.02 159.81 99.38 159.48 99.38 159.07 C99.37 158.62 98.82 158.05 98.15 157.80 C97.83 157.68 96.66 157.24 95.56 156.81 C94.46 156.38 93.28 155.93 92.94 155.81 C91.85 155.41 84.24 151.53 83.00 150.73 C82.35 150.32 81.37 149.63 80.82 149.20 C80.26 148.78 79.47 148.24 79.06 148.01 C78.01 147.41 73.52 142.93 72.62 141.56 C72.25 141.01 71.74 140.31 71.49 140.00 C70.75 139.12 69.13 135.76 68.80 134.44 C68.65 133.82 68.38 132.77 68.21 132.11 C67.92 131.02 67.89 130.63 67.85 128.05 C67.81 125.36 67.83 125.16 68.07 124.69 C68.24 124.37 68.50 124.10 68.80 123.95 C69.51 123.60 70.08 123.81 70.84 124.72 C71.86 125.94 74.76 128.86 75.88 129.78 C76.46 130.27 77.39 131.10 77.94 131.63 C78.60 132.26 79.17 132.69 79.62 132.88 C79.99 133.05 80.71 133.52 81.21 133.93 C81.97 134.57 82.38 134.79 83.82 135.35 C84.77 135.72 85.85 136.08 86.24 136.15 C86.62 136.22 87.38 136.41 87.91 136.58 C89.06 136.93 89.56 136.94 91.27 136.68 C93.27 136.38 94.44 135.64 94.76 134.48 C94.97 133.70 94.80 133.09 93.86 131.19 C93.17 129.78 92.66 128.99 91.26 127.12 C89.82 125.21 89.11 124.41 87.16 122.50 C84.26 119.66 83.04 118.56 81.78 117.66 C81.25 117.28 80.43 116.64 79.97 116.22 C79.50 115.81 78.77 115.31 78.34 115.10 C77.91 114.89 77.24 114.44 76.84 114.10 C76.44 113.76 75.76 113.31 75.34 113.10 C74.91 112.89 74.24 112.45 73.85 112.11 C73.40 111.72 72.45 111.15 71.26 110.56 C69.25 109.56 69.00 109.33 69.00 108.47 C69.00 107.32 70.33 106.37 72.87 105.72 C73.66 105.52 74.62 105.27 75.00 105.17 C75.46 105.05 76.65 104.96 78.55 104.91 C81.73 104.83 82.92 104.96 85.06 105.62 C85.68 105.82 86.38 106.01 86.62 106.06 C86.87 106.11 88.08 106.65 89.31 107.25 C91.05 108.09 91.73 108.49 92.31 109.02 C92.72 109.39 93.58 110.02 94.22 110.42 C94.87 110.83 95.91 111.66 96.61 112.33 C97.78 113.44 97.97 113.56 99.77 114.43 C101.98 115.49 102.38 115.61 102.82 115.32 C103.40 114.94 103.24 114.59 101.77 113.08 C99.59 110.84 98.60 109.34 97.50 106.56 C96.78 104.76 96.63 103.84 96.63 101.13 C96.63 99.79 96.68 98.22 96.76 97.63 C97.01 95.56 97.28 94.05 97.56 93.06 C97.72 92.51 97.97 91.49 98.11 90.80 C98.26 90.11 98.57 89.07 98.81 88.49 C99.05 87.91 99.25 87.34 99.25 87.22 C99.25 87.09 99.36 86.68 99.49 86.30 C99.63 85.92 99.83 85.12 99.94 84.54 C100.05 83.95 100.28 83.04 100.44 82.51 C100.85 81.20 101.11 79.92 101.25 78.50 C101.31 77.85 101.42 77.01 101.49 76.64 C101.65 75.84 101.66 74.14 101.51 73.44 C100.94 70.80 100.62 69.70 100.13 68.69 C99.28 66.93 99.33 65.96 100.29 65.37 C100.80 65.05 101.10 65.12 102.61 65.89 C104.65 66.94 106.30 68.06 106.96 68.85 C107.29 69.24 107.79 69.82 108.07 70.14 C108.59 70.74 110.19 73.82 110.54 74.94 C110.66 75.28 110.89 76.20 111.06 76.98 C111.23 77.76 111.49 78.77 111.63 79.23 C111.87 80.00 112.07 81.66 112.37 85.31 C112.43 86.07 112.60 87.13 112.74 87.68 C112.89 88.26 113.00 89.06 113.00 89.61 C113.00 90.14 113.08 91.04 113.18 91.62 C113.28 92.21 113.42 93.00 113.48 93.38 C113.55 93.75 113.77 94.81 113.99 95.73 C114.42 97.60 114.75 98.26 116.08 99.96 C117.41 101.67 118.15 102.10 118.75 101.50 C118.95 101.30 119.00 101.08 119.00 100.33 C119.00 99.82 118.92 98.96 118.82 98.42 C118.72 97.88 118.61 97.16 118.56 96.81 C118.52 96.47 118.40 95.91 118.29 95.56 C118.01 94.64 117.70 89.33 117.70 85.50 C117.69 82.46 117.88 78.67 118.04 78.41 C118.08 78.35 118.17 77.83 118.25 77.25 C118.33 76.66 118.47 75.91 118.57 75.56 C118.67 75.21 118.83 74.50 118.93 73.97 C119.04 73.45 119.34 72.52 119.62 71.91 C119.89 71.29 120.18 70.49 120.26 70.12 C120.48 69.09 121.19 67.66 121.86 66.88 C122.20 66.49 122.68 65.76 122.94 65.25 C123.34 64.44 123.70 64.02 125.48 62.24 C127.12 60.61 127.81 60.02 128.72 59.46 C129.36 59.06 130.23 58.49 130.64 58.19 C131.45 57.59 132.13 57.34 132.94 57.35 C133.35 57.36 133.51 57.44 133.86 57.82 C134.25 58.25 134.28 58.32 134.21 58.93 C134.17 59.32 133.97 59.95 133.70 60.48 C133.11 61.65 132.04 65.65 131.75 67.79 C131.67 68.33 131.50 69.20 131.36 69.73 C131.16 70.52 131.11 71.14 131.10 73.31 C131.08 76.14 131.28 77.97 131.73 79.02 C131.86 79.32 132.06 79.99 132.17 80.51 C132.40 81.56 132.63 81.95 133.96 83.51 C135.40 85.22 135.74 85.47 136.56 85.38 C137.53 85.27 139.18 83.76 139.90 82.31 C140.18 81.76 140.51 81.17 140.64 80.99 C140.99 80.49 142.34 77.33 142.63 76.33 C142.77 75.84 143.03 75.07 143.19 74.62 C143.63 73.46 144.10 71.82 144.30 70.81 C144.40 70.33 144.62 69.32 144.80 68.56 C144.97 67.81 145.17 66.79 145.24 66.31 C145.31 65.83 145.46 64.88 145.56 64.19 C145.97 61.55 146.16 58.93 146.24 54.88 C146.29 51.95 146.36 50.61 146.46 50.42 C146.55 50.28 146.82 49.98 147.06 49.77 C147.71 49.20 148.29 49.22 149.08 49.86 C150.00 50.59 153.65 54.35 154.13 55.06 C154.87 56.15 156.96 60.51 157.13 61.31 C157.21 61.72 157.42 62.37 157.59 62.75 C157.84 63.31 157.92 63.77 158.02 65.19 C158.20 67.74 158.08 71.70 157.76 73.75 C157.26 76.90 157.12 78.04 157.12 79.00 C157.12 80.24 157.35 81.96 157.58 82.45 C157.77 82.87 158.26 83.16 158.55 83.05 C158.82 82.95 159.10 82.27 159.24 81.35 C159.32 80.89 159.53 80.17 159.72 79.73 C160.45 78.08 162.37 74.42 162.71 74.05 C163.27 73.43 165.17 71.88 166.36 71.08 C167.66 70.20 167.98 70.03 168.74 69.80 C169.07 69.71 170.06 69.27 170.95 68.83 C171.84 68.39 172.89 67.96 173.29 67.88 C173.69 67.80 174.31 67.60 174.66 67.44 C175.02 67.29 175.51 67.12 175.75 67.07 C176.80 66.87 178.01 66.58 178.94 66.32 C179.49 66.16 180.39 65.97 180.94 65.90 C181.49 65.82 182.25 65.63 182.64 65.45 C183.03 65.28 183.56 65.10 183.83 65.06 C186.32 64.61 190.06 63.18 192.01 61.92 C192.66 61.50 193.33 61.09 193.50 61.00 C193.67 60.91 194.39 60.27 195.11 59.58 C196.14 58.56 196.49 58.12 196.88 57.36 C197.59 55.96 198.26 55.54 199.18 55.93 C199.91 56.23 200.03 56.67 200.10 59.38 C200.15 61.43 200.12 61.81 199.89 62.80 C199.16 65.86 195.98 70.44 192.96 72.79 C190.49 74.71 186.00 78.08 185.39 78.47 C184.33 79.15 183.43 79.95 180.60 82.74 C178.28 85.03 177.97 85.38 177.70 86.06 C177.53 86.47 177.24 87.17 177.06 87.62 C176.79 88.25 176.73 88.56 176.78 89.08 C176.90 90.59 177.92 90.66 179.43 89.26 C180.58 88.19 182.25 86.82 183.11 86.25 C183.57 85.94 184.76 85.09 185.76 84.36 C186.75 83.64 188.01 82.80 188.56 82.50 C189.11 82.21 190.02 81.63 190.58 81.23 C191.89 80.28 196.30 78.08 197.31 77.88 C197.72 77.79 198.41 77.56 198.84 77.37 C199.27 77.18 199.94 76.95 200.34 76.87 C200.74 76.79 201.37 76.58 201.75 76.41 C202.13 76.25 202.89 76.05 203.44 75.99 C203.99 75.92 204.66 75.81 204.94 75.75 C205.21 75.68 205.78 75.63 206.19 75.63 C206.60 75.63 207.44 75.53 208.06 75.42 C209.54 75.16 211.30 75.25 212.88 75.66 C213.53 75.83 214.62 76.06 215.31 76.18 C216.47 76.36 216.75 76.47 219.22 77.70 C222.06 79.12 222.66 79.57 222.82 80.42 C222.99 81.34 222.30 82.00 220.91 82.24 C220.44 82.33 219.61 82.52 219.06 82.68 C218.51 82.84 217.59 83.03 217.02 83.11 C216.36 83.19 215.65 83.39 215.14 83.62 C214.68 83.82 213.95 84.08 213.50 84.18 C212.47 84.41 207.98 86.64 206.80 87.51 C206.32 87.85 205.48 88.42 204.91 88.76 C204.25 89.17 203.68 89.64 203.29 90.10 C202.96 90.49 202.34 91.19 201.92 91.65 C201.31 92.31 201.10 92.64 200.93 93.21 C200.82 93.61 200.59 94.36 200.42 94.88 C199.88 96.59 200.09 97.33 201.37 98.09 C202.37 98.69 203.57 98.92 205.35 98.83 C207.92 98.72 209.66 98.52 210.88 98.21 C211.53 98.04 212.61 97.81 213.29 97.69 C213.96 97.58 214.75 97.38 215.05 97.26 C215.34 97.13 215.92 96.96 216.32 96.87 C216.73 96.79 217.41 96.56 217.84 96.37 C218.27 96.18 218.94 95.95 219.34 95.87 C219.74 95.79 220.43 95.56 220.88 95.36 C221.32 95.17 222.05 94.93 222.50 94.82 C223.68 94.56 230.98 90.89 232.49 89.81 C234.02 88.71 235.36 88.07 235.92 88.18 C236.63 88.31 237.12 89.05 237.12 89.97 C237.12 90.46 236.94 91.22 236.35 93.19 C236.15 93.88 235.89 94.72 235.79 95.06 C235.48 96.10 233.14 100.59 232.34 101.67 C231.48 102.84 228.85 105.51 227.95 106.12 C227.10 106.70 218.75 110.85 217.96 111.09 C217.61 111.19 216.72 111.58 215.99 111.94 C213.42 113.23 212.05 115.21 213.76 115.18 C214.07 115.17 214.99 114.98 215.81 114.76 C216.64 114.54 217.62 114.27 218.00 114.18 C218.92 113.94 221.80 113.95 223.35 114.19 C224.49 114.37 224.75 114.47 227.56 115.87 C230.03 117.09 230.71 117.48 231.38 118.09 C231.83 118.49 232.73 119.22 233.38 119.71 C234.11 120.27 236.13 122.18 238.69 124.75 C240.96 127.03 243.29 129.29 243.88 129.78 C244.46 130.27 245.36 131.07 245.88 131.57 C246.73 132.40 247.03 132.59 249.19 133.67 C251.78 134.95 252.53 135.17 254.69 135.29 C256.38 135.39 257.52 135.89 257.79 136.66 C257.92 137.02 257.59 137.64 256.92 138.28 C256.09 139.09 255.56 139.43 253.87 140.26 C252.35 141.01 251.82 141.15 248.97 141.58 C247.57 141.78 247.44 141.78 245.97 141.57 C244.41 141.34 242.07 140.79 240.94 140.38 C240.59 140.26 240.00 140.09 239.62 140.00 C239.25 139.91 238.07 139.42 237.01 138.91 C235.95 138.40 234.68 137.89 234.20 137.78 C233.65 137.65 232.40 137.12 230.94 136.39 C229.63 135.75 228.23 135.14 227.81 135.04 C227.40 134.94 226.59 134.68 226.00 134.45 C225.42 134.22 224.57 133.97 224.12 133.89 C220.45 133.28 220.34 133.28 218.86 133.74 C218.42 133.87 217.91 134.02 217.73 134.06 C217.20 134.16 216.62 134.72 216.62 135.11 C216.62 135.75 217.39 136.29 218.88 136.69 C219.32 136.82 220.17 137.16 220.76 137.45 C221.34 137.75 222.24 138.09 222.76 138.21 C224.13 138.53 231.17 142.05 232.16 142.90 C232.56 143.25 233.24 143.69 233.66 143.90 C234.09 144.11 234.76 144.55 235.16 144.90 C235.56 145.24 236.29 145.72 236.79 145.96 C237.58 146.35 237.99 146.70 240.26 148.98 C242.25 150.98 242.97 151.79 243.44 152.56 C243.78 153.11 244.38 154.02 244.78 154.58 C245.69 155.85 246.92 158.33 247.13 159.32 C247.21 159.73 247.42 160.37 247.59 160.75 C247.75 161.13 247.95 161.89 248.01 162.44 C248.08 162.99 248.19 163.66 248.25 163.94 C248.32 164.21 248.37 165.37 248.37 166.50 C248.37 168.31 248.34 168.63 248.12 169.12 C247.82 169.78 247.54 170.12 247.17 170.26 C246.49 170.52 245.33 169.76 244.11 168.25 C243.16 167.06 241.34 165.23 240.12 164.22 C239.54 163.73 238.64 162.93 238.12 162.42 C237.51 161.82 236.91 161.37 236.38 161.11 C235.93 160.90 235.36 160.56 235.10 160.36 C234.85 160.16 234.34 159.87 233.98 159.72 C233.61 159.58 233.16 159.35 232.96 159.22 C232.46 158.87 229.81 157.88 229.00 157.74 C228.62 157.67 227.96 157.53 227.52 157.41 C226.84 157.23 226.56 157.23 225.46 157.36 C223.23 157.61 221.87 158.18 221.41 159.03 C221.27 159.29 221.20 159.71 221.20 160.19 C221.21 160.85 221.30 161.13 222.03 162.62 C222.48 163.55 223.10 164.65 223.40 165.06 C223.70 165.47 224.20 166.18 224.50 166.62 C226.05 168.91 231.18 174.09 233.88 176.09 C234.81 176.78 235.91 177.65 236.32 178.02 C236.73 178.39 237.54 179.00 238.12 179.37 C238.71 179.73 239.50 180.30 239.88 180.63 C240.26 180.96 240.91 181.39 241.34 181.60 C241.76 181.80 242.26 182.08 242.46 182.22 C242.65 182.36 243.51 182.83 244.36 183.27 C245.21 183.70 246.12 184.27 246.38 184.52 C247.30 185.41 247.32 186.58 246.44 187.36 C246.00 187.75 245.84 187.80 244.06 188.18 C243.51 188.30 242.61 188.53 242.06 188.69 C241.04 189.00 238.47 189.30 237.00 189.29 C235.66 189.28 232.76 189.03 231.56 188.82 C230.58 188.64 230.07 188.44 227.50 187.17 C225.40 186.14 224.36 185.55 223.86 185.12 C223.48 184.79 222.86 184.34 222.50 184.12 C221.66 183.63 220.58 182.80 219.65 181.94 C219.26 181.58 218.54 181.04 218.06 180.75 C217.58 180.46 216.88 180.01 216.50 179.75 C214.87 178.65 213.00 178.41 213.00 179.30 C213.00 179.65 213.36 180.10 214.76 181.50 C216.69 183.43 218.50 186.71 219.14 189.44 C219.49 190.95 219.48 195.96 219.12 197.70 C218.98 198.38 218.81 199.36 218.74 199.88 C218.62 200.77 218.15 202.54 217.37 205.12 C216.68 207.38 215.84 210.44 215.68 211.25 C215.60 211.70 215.38 212.68 215.20 213.44 C215.01 214.19 214.81 215.49 214.74 216.31 C214.68 217.14 214.57 218.07 214.50 218.38 C214.38 218.96 214.50 219.91 215.01 222.69 C215.22 223.80 215.41 224.36 216.01 225.61 C216.83 227.31 216.90 227.74 216.45 228.18 C215.97 228.66 215.41 228.70 214.48 228.31 C214.05 228.13 213.38 227.87 213.01 227.73 C212.63 227.60 212.06 227.27 211.74 227.00 C211.42 226.73 210.82 226.31 210.42 226.08 C209.54 225.56 208.82 224.83 208.18 223.81 C207.92 223.40 207.45 222.72 207.15 222.31 C206.41 221.31 206.06 220.59 205.88 219.69 C205.79 219.28 205.56 218.59 205.37 218.16 C205.03 217.42 204.74 216.18 204.56 214.81 C204.52 214.47 204.40 213.91 204.30 213.56 C204.13 212.98 203.90 210.99 203.63 207.69 C203.57 206.93 203.40 205.87 203.26 205.32 C203.11 204.75 203.00 203.94 203.00 203.41 C203.00 202.27 202.57 199.67 202.25 198.95 C202.13 198.65 201.96 198.08 201.88 197.68 C201.67 196.67 200.39 194.07 199.73 193.32 C198.59 192.02 197.76 191.69 197.25 192.34 C196.99 192.66 196.98 192.77 197.06 193.88 C197.17 195.52 197.46 197.50 197.75 198.69 C198.08 200.05 198.28 203.28 198.35 208.00 C198.40 211.89 198.33 213.10 197.94 215.56 C197.84 216.18 197.72 216.94 197.68 217.25 C197.64 217.56 197.52 218.09 197.43 218.44 C197.33 218.79 197.17 219.50 197.07 220.03 C196.96 220.55 196.66 221.48 196.38 222.09 C196.11 222.71 195.82 223.51 195.74 223.88 C195.52 224.91 194.81 226.34 194.14 227.12 C193.80 227.51 193.32 228.24 193.06 228.75 C192.66 229.56 192.30 229.98 190.52 231.76 C188.46 233.81 187.87 234.26 185.36 235.73 C184.36 236.32 183.03 236.52 182.39 236.19 C181.61 235.79 181.59 234.93 182.32 233.48 C182.89 232.35 183.97 228.31 184.25 226.21 C184.33 225.67 184.49 224.83 184.62 224.34 C184.91 223.18 185.06 219.34 184.89 217.42 C184.80 216.42 184.68 215.84 184.45 215.33 C184.28 214.93 184.07 214.27 184.00 213.84 C183.67 212.03 181.62 209.25 180.05 208.49 C179.39 208.17 178.91 208.23 178.32 208.67 C177.67 209.17 175.99 211.33 175.74 212.00 C175.61 212.35 175.36 212.84 175.19 213.10 C175.02 213.36 174.75 213.96 174.58 214.44 C174.42 214.92 174.05 215.78 173.76 216.36 C173.47 216.93 173.12 217.86 172.98 218.42 C172.84 218.98 172.53 220.11 172.28 220.94 C172.04 221.76 171.77 222.80 171.68 223.25 C171.59 223.70 171.38 224.68 171.20 225.44 C171.03 226.19 170.80 227.40 170.69 228.12 C170.58 228.85 170.41 230.00 170.31 230.69 C170.04 232.54 169.85 235.61 169.76 239.72 L169.69 243.37 L169.30 243.76 C168.76 244.29 168.13 244.36 167.31 243.96 Z M162.29 191.69 C163.26 191.53 163.82 191.35 164.96 190.81 C165.75 190.44 166.60 190.09 166.85 190.05 C167.11 190.00 167.52 189.86 167.77 189.74 C168.44 189.40 170.00 188.13 170.51 187.49 C171.43 186.36 171.55 185.81 171.14 184.62 C171.01 184.24 170.81 183.42 170.71 182.80 C170.60 182.17 170.40 181.31 170.26 180.89 C170.12 180.48 170.00 180.04 170.00 179.94 C170.00 179.62 169.53 178.78 169.22 178.57 C168.86 178.31 168.13 178.33 167.79 178.60 C167.65 178.72 167.30 179.26 167.02 179.81 C166.37 181.12 165.31 182.39 164.58 182.74 C164.03 183.01 163.97 183.01 158.04 182.97 C151.35 182.93 151.72 182.98 150.77 182.00 C150.31 181.53 150.11 181.16 149.70 179.99 C149.59 179.67 149.29 179.18 149.05 178.89 C148.67 178.45 148.53 178.38 148.13 178.38 C146.98 178.38 146.31 180.06 145.58 184.78 C145.38 186.07 145.41 186.34 145.86 187.22 C146.29 188.07 146.84 188.60 147.73 189.02 C148.19 189.24 148.74 189.55 148.96 189.71 C149.40 190.05 151.82 191.00 152.88 191.25 C153.25 191.34 153.76 191.50 154.00 191.60 C154.23 191.69 154.80 191.82 155.25 191.88 C156.50 192.04 160.88 191.92 162.29 191.69 Z M143.99 177.38 C144.13 177.25 144.39 176.64 144.57 176.04 C145.21 173.86 145.32 173.77 147.40 173.62 C148.15 173.56 148.94 173.46 149.16 173.39 C149.38 173.31 150.19 173.12 150.96 172.95 C152.73 172.56 154.16 171.85 155.13 170.88 C156.19 169.83 156.28 169.54 156.23 167.58 C156.19 166.05 156.16 165.90 155.84 165.35 C155.47 164.72 154.25 163.68 153.19 163.07 C152.84 162.88 152.24 162.44 151.85 162.11 C151.16 161.51 149.23 160.47 147.62 159.82 C146.72 159.45 144.58 158.82 143.81 158.70 C143.54 158.65 142.86 158.51 142.31 158.38 C140.90 158.05 137.60 157.94 136.47 158.18 C135.63 158.36 134.14 159.12 133.73 159.58 C133.44 159.89 132.90 161.09 132.80 161.61 C132.70 162.10 132.90 163.65 133.27 165.38 C133.56 166.72 134.97 169.80 135.70 170.71 C136.19 171.31 137.32 172.19 138.51 172.88 C139.23 173.30 139.51 173.58 140.42 174.79 C141.81 176.63 142.85 177.62 143.37 177.62 C143.58 177.62 143.86 177.52 143.99 177.38 Z M174.40 176.28 C174.95 175.75 175.84 174.75 176.37 174.06 C177.58 172.51 177.57 172.52 178.94 171.83 C179.57 171.51 180.23 171.09 180.41 170.90 C180.84 170.45 182.68 166.93 183.00 165.94 C183.82 163.44 183.91 163.01 183.84 162.01 C183.73 160.33 182.66 158.58 181.56 158.26 C181.29 158.18 179.85 158.08 178.36 158.04 C176.20 157.98 175.42 158.00 174.49 158.16 C173.84 158.27 173.06 158.40 172.75 158.44 C171.86 158.56 170.14 159.11 169.25 159.56 C168.80 159.78 168.25 160.01 168.03 160.06 C167.81 160.11 167.36 160.33 167.03 160.55 C166.70 160.77 165.94 161.22 165.32 161.56 C164.71 161.89 163.89 162.45 163.50 162.80 C163.11 163.15 162.43 163.75 161.99 164.14 C161.52 164.54 161.03 165.11 160.83 165.50 C160.51 166.07 160.46 166.32 160.40 167.50 C160.35 168.71 160.37 168.91 160.62 169.42 C161.08 170.37 162.54 171.45 164.31 172.15 C165.68 172.69 167.54 173.12 169.10 173.24 C170.43 173.35 170.71 173.50 171.34 174.43 C171.71 174.97 171.82 175.26 172.06 176.29 C172.16 176.78 172.67 177.25 173.07 177.25 C173.32 177.25 173.67 177.00 174.40 176.28 Z M146.10 154.93 C146.12 154.75 145.87 154.37 145.33 153.77 C144.47 152.81 144.22 152.22 144.40 151.54 C144.60 150.78 145.03 150.60 147.62 150.18 C148.53 150.04 150.43 149.98 155.69 149.92 C162.20 149.86 163.17 149.88 169.69 150.23 C171.30 150.32 171.67 150.45 172.08 151.07 C172.22 151.29 172.26 151.54 172.22 151.94 C172.16 152.50 171.93 152.90 171.05 153.99 C170.79 154.31 170.63 154.64 170.65 154.80 C170.72 155.27 171.39 155.08 173.60 153.98 L175.69 152.95 L178.13 150.56 C180.98 147.77 182.04 147.02 183.61 146.67 C184.14 146.56 184.73 146.39 184.94 146.30 C185.14 146.22 185.65 146.09 186.06 146.01 C186.47 145.94 187.16 145.71 187.60 145.50 C188.04 145.30 188.75 145.07 189.19 144.99 C190.48 144.77 191.69 143.99 193.41 142.28 C194.23 141.47 194.97 140.67 195.07 140.49 C195.69 139.32 195.78 135.13 195.27 131.62 C194.70 127.74 194.49 126.50 194.29 126.04 C194.18 125.78 194.01 125.28 193.91 124.94 C193.54 123.68 192.70 122.56 191.50 121.76 C190.82 121.29 188.59 120.36 187.75 120.18 C187.51 120.13 186.83 119.85 186.24 119.55 C185.66 119.25 184.76 118.91 184.24 118.79 C183.63 118.64 182.44 118.14 180.73 117.29 C179.17 116.52 177.80 115.92 177.29 115.80 C176.82 115.69 175.80 115.30 175.03 114.93 C174.07 114.47 173.29 114.20 172.56 114.06 C171.97 113.95 170.87 113.67 170.11 113.43 C169.35 113.19 168.55 113.00 168.32 113.00 C167.69 113.00 165.41 112.64 164.32 112.37 C163.42 112.15 162.90 112.13 158.57 112.13 C153.62 112.13 153.13 112.17 149.94 112.80 C149.39 112.90 148.17 113.11 147.22 113.25 C146.28 113.39 145.26 113.61 144.96 113.74 C144.66 113.87 144.08 114.04 143.68 114.13 C143.27 114.21 142.57 114.44 142.12 114.64 C141.68 114.83 140.94 115.07 140.49 115.18 C139.95 115.30 138.70 115.85 136.80 116.81 C134.86 117.79 133.47 118.40 132.50 118.71 C131.71 118.95 130.70 119.34 130.25 119.56 C129.80 119.79 129.10 120.04 128.69 120.12 C127.54 120.34 124.94 121.67 124.25 122.37 C123.57 123.08 122.89 124.40 122.39 126.00 C121.95 127.40 121.92 127.56 121.75 128.76 C121.68 129.27 121.51 130.14 121.38 130.69 C121.19 131.50 121.13 132.33 121.08 135.22 C121.02 139.15 121.10 139.94 121.66 140.64 C121.85 140.87 122.24 141.37 122.53 141.75 C122.83 142.13 123.34 142.61 123.67 142.81 C124.01 143.02 124.70 143.53 125.22 143.96 C125.95 144.56 126.36 144.79 127.05 145.00 C129.06 145.62 130.40 146.01 132.00 146.45 C132.93 146.71 133.91 147.03 134.19 147.16 C134.47 147.30 135.85 148.56 137.38 150.07 C139.67 152.34 140.23 152.83 141.23 153.42 C141.87 153.80 142.77 154.22 143.23 154.36 C143.69 154.50 144.40 154.76 144.81 154.93 C145.68 155.30 146.05 155.30 146.10 154.93 Z M147.62 140.78 C147.24 140.66 146.96 140.28 146.41 139.19 C145.67 137.71 145.45 137.42 144.77 136.99 C144.12 136.58 143.70 136.54 142.65 136.81 C142.26 136.91 141.40 137.11 140.75 137.26 C140.10 137.40 139.22 137.64 138.81 137.79 C138.12 138.03 137.80 138.05 134.75 138.06 L131.44 138.06 L129.94 137.38 C128.70 136.81 128.32 136.56 127.75 135.98 C126.99 135.20 126.32 134.17 126.04 133.35 C125.73 132.46 125.68 131.08 125.93 130.52 C126.25 129.81 126.66 129.63 127.89 129.62 C128.47 129.62 129.42 129.54 130.00 129.44 C131.28 129.21 137.57 129.17 138.64 129.38 C139.01 129.46 139.93 129.57 140.69 129.63 C143.58 129.86 144.49 130.00 146.13 130.48 C148.08 131.04 148.45 131.21 149.06 131.82 C149.97 132.73 150.05 133.17 149.78 136.12 C149.66 137.53 149.22 139.48 148.89 140.10 C148.63 140.58 148.03 140.90 147.62 140.78 Z M167.75 140.22 C167.10 139.88 166.63 138.83 166.63 137.69 C166.63 137.34 166.54 136.58 166.44 136.00 C166.21 134.73 166.20 133.27 166.40 132.61 C166.77 131.36 168.52 130.22 170.41 129.99 C170.98 129.92 171.52 129.84 171.62 129.81 C171.80 129.76 172.57 129.64 175.75 129.18 C176.82 129.02 177.99 129.00 182.00 129.04 C187.85 129.10 189.25 129.21 189.71 129.64 C190.67 130.54 190.59 131.83 189.43 133.96 C188.39 135.87 187.13 136.93 185.47 137.31 C184.98 137.42 184.25 137.62 183.85 137.76 C182.49 138.22 180.01 138.01 176.25 137.13 C175.32 136.92 174.21 136.63 173.77 136.50 C172.75 136.18 172.09 136.19 171.41 136.51 C170.61 136.90 170.08 137.60 169.77 138.68 C169.50 139.60 169.00 140.25 168.56 140.25 C168.47 140.25 168.32 140.28 168.23 140.31 C168.14 140.34 167.92 140.30 167.75 140.22 Z"
+        />
+      </symbol>
+    </svg>
+
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="wrap header-row">
+        <a
+          class="logo"
+          href="https://grupobafar.com/en/"
+          aria-label="Grupo Bafar — home"
+          ><svg class="logo-mark" aria-hidden="true" focusable="false">
+            <use href="#bafar-mark" /></svg
+          ><span class="logo-word">GRUPO <span>BAFAR</span></span></a
+        >
+        <button
+          class="menu-btn"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="nav"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path d="M3 6h18M3 12h18M3 18h18" />
+          </svg>
+        </button>
+        <nav class="nav" id="nav" aria-label="Main">
+          <ul>
+            <li>
+              <a class="nav-link" href="https://grupobafar.com/en/who-are-we/"
+                >Who we are
+                <svg viewBox="0 0 10 10" aria-hidden="true">
+                  <path
+                    d="M1 3l4 4 4-4"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-width="1.6"
+                  /></svg
+              ></a>
+              <ul class="dropdown">
+                <li>
+                  <a href="https://grupobafar.com/en/who-are-we/history/"
+                    >History</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://grupobafar.com/en/who-are-we/mission-and-values/"
+                    >Mission and values</a
+                  >
+                </li>
+                <li>
+                  <a href="https://grupobafar.com/en/who-are-we/golden-rule/"
+                    >Golden Rule</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://grupobafar.com/en/who-are-we/architect-of-my-own-destiny/"
+                    >Architect of my own destiny</a
+                  >
+                </li>
+                <li>
+                  <a href="https://grupobafar.com/en/who-are-we/leader/"
+                    >Leader</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://grupobafar.com/en/who-are-we/acknowledgments/"
+                    >Acknowledgments</a
+                  >
+                </li>
+                <li>
+                  <a href="https://grupobafar.com/en/who-are-we/bafar-way/"
+                    >News and events</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a
+                class="nav-link"
+                href="https://grupobafar.com/en/business-units/"
+                >Business units
+                <svg viewBox="0 0 10 10" aria-hidden="true">
+                  <path
+                    d="M1 3l4 4 4-4"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-width="1.6"
+                  /></svg
+              ></a>
+              <ul class="dropdown">
+                <li>
+                  <a
+                    href="https://grupobafar.com/en/business-units/bafar-foods/"
+                    >Bafar Alimentos</a
+                  >
+                </li>
+                <li>
+                  <a href="https://grupobafar.com/en/business-units/nova-fiber/"
+                    >Nova Fiber</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://grupobafar.com/en/business-units/finantial-division/"
+                    >Financial Division</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://grupobafar.com/en/business-units/b-insurance/"
+                    >B-Insurance</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a
+                class="nav-link"
+                href="https://inversionistas.grupobafar.com/en/"
+                >Investors</a
+              >
+            </li>
+            <li>
+              <a
+                class="nav-link"
+                href="https://grupobafar.com/en/social-responsibility/"
+                >Social responsibility
+                <svg viewBox="0 0 10 10" aria-hidden="true">
+                  <path
+                    d="M1 3l4 4 4-4"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-width="1.6"
+                  /></svg
+              ></a>
+              <ul class="dropdown">
+                <li>
+                  <a
+                    href="https://grupobafar.com/en/social-responsibility/bafar-group-foundation/"
+                    >Bafar Group Foundation</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://grupobafar.com/en/social-responsibility/b-energy/"
+                    >B-Energy</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://grupobafar.com/en/social-responsibility/kinetics-division/"
+                    >Wildlife Conservation</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://grupobafar.com/en/social-responsibility/integridad-corporativa/"
+                    >Corporate Integrity</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://grupobafar.com/en/social-responsibility/educational-football-program/"
+                    >Educational Football Program</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a class="nav-link" href="https://grupobafar.com/en/careers/"
+                >Careers</a
+              >
+            </li>
+            <li>
+              <a class="nav-link" href="https://grupobafar.com/en/contact/"
+                >Contact</a
+              >
+            </li>
+          </ul>
+          <div class="lang">
+            <a href="https://grupobafar.com/" lang="es">ES</a
+            ><a href="https://grupobafar.com/en/" aria-current="page">EN</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- Hero -->
+      <section class="hero" aria-label="Introduction">
+        <div class="wrap">
+          <div class="hero-top">
+            <div class="hero-copy">
+              <div class="eyebrow">Grupo Bafar · 35+ years</div>
+              <h1>Fueling Mexico's progress.</h1>
+            </div>
+            <div class="hero-copy">
+              <p class="lede">
+                Committed to the country's present and future — creating more
+                and better opportunities from our land.
+              </p>
+              <div class="hero-actions">
+                <a
+                  class="btn btn-red"
+                  href="https://grupobafar.com/en/who-are-we/"
+                  >Who we are</a
+                >
+                <a
+                  class="btn btn-ghost"
+                  href="https://grupobafar.com/en/business-units/"
+                  >Business units</a
+                >
+              </div>
+            </div>
+          </div>
+          <div class="hero-media" id="hero-media">
+            <div
+              class="hero-slide active"
+              id="slide-0"
+              role="tabpanel"
+              aria-labelledby="tab-0"
+            >
+              <img
+                src="https://cdn-lmhcj.nitrocdn.com/bqSdngDrbfqwEehFrDAzuumqaIljTbhD/assets/images/optimized/rev-14ecd9b/grupobafar.com/wp-content/uploads/2024/10/Unidades-de-negocio.png"
+                alt="Grupo Bafar consumer products"
+              />
+            </div>
+            <div
+              class="hero-slide"
+              id="slide-1"
+              role="tabpanel"
+              aria-labelledby="tab-1"
+              aria-hidden="true"
+            >
+              <img
+                src="https://cdn-lmhcj.nitrocdn.com/bqSdngDrbfqwEehFrDAzuumqaIljTbhD/assets/images/optimized/rev-14ecd9b/grupobafar.com/wp-content/uploads/2024/02/Retail.png"
+                alt="Grupo Bafar retail stores"
+                loading="lazy"
+              />
+            </div>
+            <div
+              class="hero-slide"
+              id="slide-2"
+              role="tabpanel"
+              aria-labelledby="tab-2"
+              aria-hidden="true"
+            >
+              <img
+                src="https://cdn-lmhcj.nitrocdn.com/bqSdngDrbfqwEehFrDAzuumqaIljTbhD/assets/images/optimized/rev-14ecd9b/grupobafar.com/wp-content/uploads/2024/02/B-Energy.png"
+                alt="B-Energy power plant"
+                loading="lazy"
+              />
+            </div>
+            <div
+              class="hero-slide"
+              id="slide-3"
+              role="tabpanel"
+              aria-labelledby="tab-3"
+              aria-hidden="true"
+            >
+              <img
+                src="https://cdn-lmhcj.nitrocdn.com/bqSdngDrbfqwEehFrDAzuumqaIljTbhD/assets/images/optimized/rev-14ecd9b/grupobafar.com/wp-content/uploads/2024/10/Division-Agroindustrial.png"
+                alt="Agroindustrial fields in Chihuahua"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          <div class="hero-tabs" role="tablist" aria-label="Featured divisions">
+            <button
+              role="tab"
+              id="tab-0"
+              aria-controls="slide-0"
+              aria-selected="true"
+              data-href="https://grupobafar.com/en/business-units/bafar-foods/consumer-products-division/"
+            >
+              <span class="num">01</span
+              ><span class="lbl">Consumer Products</span
+              ><span class="sub">Quality, taste and nutrition</span>
+            </button>
+            <button
+              role="tab"
+              id="tab-1"
+              aria-controls="slide-1"
+              aria-selected="false"
+              tabindex="-1"
+              data-href="https://grupobafar.com/en/business-units/bafar-foods/retail-division/"
+            >
+              <span class="num">02</span><span class="lbl">Retail</span
+              ><span class="sub">BIF, Carnemart, La Pastora</span>
+            </button>
+            <button
+              role="tab"
+              id="tab-2"
+              aria-controls="slide-2"
+              aria-selected="false"
+              tabindex="-1"
+              data-href="https://grupobafar.com/en/social-responsibility/b-energy/"
+            >
+              <span class="num">03</span><span class="lbl">B-Energy</span
+              ><span class="sub">Investing in national development</span>
+            </button>
+            <button
+              role="tab"
+              id="tab-3"
+              aria-controls="slide-3"
+              aria-selected="false"
+              tabindex="-1"
+              data-href="https://grupobafar.com/en/business-units/bafar-foods/agroindustrial/"
+            >
+              <span class="num">04</span><span class="lbl">Agroindustrial</span
+              ><span class="sub">Deep roots in the land</span>
+            </button>
+          </div>
+          <div class="hero-more">
+            <a
+              id="hero-more"
+              href="https://grupobafar.com/en/business-units/bafar-foods/consumer-products-division/"
+              >Explore Consumer Products →</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick links -->
+      <nav class="quick" aria-label="Quick links">
+        <div class="wrap quick-row">
+          <span class="label">Explore</span>
+          <a
+            href="https://grupobafar.com/en/business-units/bafar-foods/consumer-products-division/"
+            >Consumer Products</a
+          >
+          <a
+            href="https://grupobafar.com/en/business-units/bafar-foods/retail-division/"
+            >Retail</a
+          >
+          <a href="https://grupobafar.com/en/business-units/nova-fiber/"
+            >Fibra Nova</a
+          >
+          <a
+            href="https://grupobafar.com/en/business-units/finantial-division/vextor/"
+            >Vextor</a
+          >
+          <a href="https://grupobafar.com/en/?udn=hunting-division"
+            >Hunting Division</a
+          >
+        </div>
+      </nav>
+
+      <!-- Intro -->
+      <section class="intro">
+        <div class="wrap">
+          <div class="intro-grid">
+            <div>
+              <div class="eyebrow">Who we are</div>
+              <h2>
+                One of Mexico's leading food companies — integrated end to end.
+              </h2>
+            </div>
+            <div class="intro-body">
+              <p>
+                From industrialization to distribution and commercialization,
+                Grupo Bafar has a solid presence in national and international
+                markets, backed by more than 35 years of experience.
+              </p>
+              <p>
+                Our growth comes from quality brands, great-tasting products
+                with high nutritional value, coverage of the entire
+                socioeconomic pyramid — and, above all, the work of our people.
+              </p>
+              <p>
+                <a
+                  class="btn btn-navy"
+                  href="https://grupobafar.com/en/who-are-we/"
+                  >Read our story</a
+                >
+              </p>
+            </div>
+          </div>
+          <div class="pillars">
+            <div class="pillar">
+              <div class="n">01</div>
+              <h3>Quality brands</h3>
+              <p>Products made for the demanding palate of Mexican families.</p>
+            </div>
+            <div class="pillar">
+              <div class="n">02</div>
+              <h3>Every household</h3>
+              <p>Total coverage of the socioeconomic pyramid.</p>
+            </div>
+            <div class="pillar">
+              <div class="n">03</div>
+              <h3>Continuous improvement</h3>
+              <p>Following world trends to create cutting-edge products.</p>
+            </div>
+            <div class="pillar">
+              <div class="n">04</div>
+              <h3>Our people</h3>
+              <p>Creating more and better opportunities for Mexicans.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Business units -->
+      <section class="section units">
+        <div class="wrap">
+          <div class="section-head">
+            <h2>Our business units</h2>
+            <a href="https://grupobafar.com/en/business-units/"
+              >All business units →</a
+            >
+          </div>
+          <div class="unit-grid">
+            <a
+              class="unit"
+              href="https://grupobafar.com/en/business-units/bafar-foods/"
+            >
+              <div class="unit-img">
+                <img
+                  src="https://grupobafar.com/wp-content/uploads/2019/07/Baf_portadas_wide_03_division_de_producto.png"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <div class="unit-body">
+                <h3>Bafar Alimentos</h3>
+                <p>
+                  Consumer brands across every deli segment, retail formats and
+                  agroindustry.
+                </p>
+                <span class="more">Learn more →</span>
+              </div>
+            </a>
+            <a
+              class="unit"
+              href="https://grupobafar.com/en/business-units/nova-fiber/"
+            >
+              <div class="unit-img">
+                <img
+                  src="https://grupobafar.com/wp-content/uploads/2024/02/Fibra-NOVA-1024x302.png"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <div class="unit-body">
+                <h3>Nova Fiber</h3>
+                <p>
+                  A real estate investment trust listed on the Mexican Stock
+                  Exchange.
+                </p>
+                <span class="more">Learn more →</span>
+              </div>
+            </a>
+            <a
+              class="unit"
+              href="https://grupobafar.com/en/business-units/finantial-division/"
+            >
+              <div class="unit-img">
+                <img
+                  src="https://grupobafar.com/wp-content/uploads/2019/07/inversionistas_01.png"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <div class="unit-body">
+                <h3>Financial Division</h3>
+                <p>
+                  Business loans and venture capital for growing Mexican SMEs.
+                </p>
+                <span class="more">Learn more →</span>
+              </div>
+            </a>
+            <a
+              class="unit"
+              href="https://grupobafar.com/en/business-units/b-insurance/"
+            >
+              <div class="unit-img">
+                <img
+                  src="https://grupobafar.com/wp-content/uploads/2021/04/Header-página-BSeguros-01.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <div class="unit-body">
+                <h3>B-Insurance</h3>
+                <p>
+                  Insurance and surety brokerage for businesses and families.
+                </p>
+                <span class="more">Learn more →</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- News -->
+      <section class="section">
+        <div class="wrap">
+          <div class="section-head">
+            <h2>News and events</h2>
+            <a href="https://grupobafar.com/en/who-are-we/bafar-way/"
+              >All news →</a
+            >
+          </div>
+          <div class="news-grid">
+            <a
+              class="news feature"
+              href="https://grupobafar.com/en/the-bafar-group-strengthens-its-logistics-capabilities-with-the-expansion-of-the-cedis-chihuahua-facility/"
+            >
+              <div class="news-img">
+                <img
+                  src="https://grupobafar.com/wp-content/uploads/2026/10/Recurso-1.png"
+                  alt="Expanded CEDIS Chihuahua distribution center"
+                  loading="lazy"
+                />
+              </div>
+              <div class="news-body">
+                <time datetime="2026-10-06">October 6, 2026</time>
+                <h3>
+                  Grupo Bafar strengthens its logistics with the expansion of
+                  CEDIS Chihuahua
+                </h3>
+                <div class="facts">
+                  <div><strong>646M+</strong><span>pesos invested</span></div>
+                  <div><strong>153</strong><span>jobs created</span></div>
+                  <div>
+                    <strong>27,938</strong><span>storage positions</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <div class="news-side">
+              <a
+                class="news small"
+                href="https://grupobafar.com/en/grupo-bafar-climbs-to-137th-place-in-the-expansion-ranking/"
+              >
+                <div class="news-img">
+                  <img
+                    src="https://grupobafar.com/wp-content/uploads/2026/09/las500.jpg"
+                    alt="Expansión 500 ranking"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="news-body">
+                  <time datetime="2026-09-21">September 21, 2026</time>
+                  <h3>
+                    Grupo Bafar climbs to 137th place in the Expansión ranking
+                  </h3>
+                </div>
+              </a>
+              <a
+                class="news small"
+                href="https://grupobafar.com/en/grupo-bafar-ranks-31-on-expansions-responsible-companies-list/"
+              >
+                <div class="news-img">
+                  <img
+                    src="https://grupobafar.com/wp-content/uploads/2026/09/Captura-de-pantalla-2026-09-14-a-las-4.49.45-p.m.png"
+                    alt="Expansión Responsible Companies list"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="news-body">
+                  <time datetime="2026-09-14">September 14, 2026</time>
+                  <h3>
+                    Grupo Bafar ranks #31 on Expansión's "Responsible Companies"
+                    list
+                  </h3>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Brands -->
+      <section class="section brands">
+        <div class="wrap">
+          <div class="section-head">
+            <h2>Our brands</h2>
+            <a href="https://grupobafar.com/en/business-units/bafar-foods/"
+              >Bafar Alimentos →</a
+            >
+          </div>
+          <div class="brand-group">
+            <h3>Consumer products</h3>
+            <div class="brand-grid">
+              <a
+                href="https://grupobafar.com/en/business-units/bafar-foods/consumer-products-division/parma/"
+              >
+                <span class="brand-logo"
+                  ><img
+                    src="https://cdn-lmhcj.nitrocdn.com/bqSdngDrbfqwEehFrDAzuumqaIljTbhD/assets/images/optimized/rev-14ecd9b/grupobafar.com/wp-content/uploads/2017/12/2017-12-12.png"
+                    alt=""
+                    loading="lazy"
+                /></span>
+                <span class="brand-name">Parma</span>
+              </a>
+              <a
+                href="https://grupobafar.com/en/business-units/bafar-foods/consumer-products-division/sabori/"
+              >
+                <span class="brand-logo"
+                  ><img
+                    src="https://cdn-lmhcj.nitrocdn.com/bqSdngDrbfqwEehFrDAzuumqaIljTbhD/assets/images/optimized/rev-14ecd9b/grupobafar.com/wp-content/uploads/2017/12/SABORI.png"
+                    alt=""
+                    loading="lazy"
+                /></span>
+                <span class="brand-name">Sabori</span>
+              </a>
+              <a
+                href="https://grupobafar.com/en/business-units/bafar-foods/consumer-products-division/campestre/"
+              >
+                <span class="brand-logo"
+                  ><img
+                    src="https://cdn-lmhcj.nitrocdn.com/bqSdngDrbfqwEehFrDAzuumqaIljTbhD/assets/images/optimized/rev-14ecd9b/grupobafar.com/wp-content/uploads/2017/12/CAMPESTRE.png"
+                    alt=""
+                    loading="lazy"
+                /></span>
+                <span class="brand-name">Campestre</span>
+              </a>
+              <a
+                href="https://grupobafar.com/en/business-units/bafar-foods/consumer-products-division/bafar/"
+              >
+                <span class="brand-logo"
+                  ><img
+                    src="https://cdn-lmhcj.nitrocdn.com/bqSdngDrbfqwEehFrDAzuumqaIljTbhD/assets/images/optimized/rev-14ecd9b/grupobafar.com/wp-content/uploads/2017/12/BAFAR.png"
+                    alt=""
+                    loading="lazy"
+                /></span>
+                <span class="brand-name">Bafar</span>
+              </a>
+              <a
+                href="https://grupobafar.com/en/business-units/bafar-foods/consumer-products-division/grillers/"
+              >
+                <span class="brand-logo"
+                  ><img
+                    src="https://cdn-lmhcj.nitrocdn.com/bqSdngDrbfqwEehFrDAzuumqaIljTbhD/assets/images/optimized/rev-14ecd9b/grupobafar.com/wp-content/uploads/2017/12/GRILLERS.png"
+                    alt=""
+                    loading="lazy"
+                /></span>
+                <span class="brand-name">Griller's</span>
+              </a>
+              <a
+                href="https://grupobafar.com/en/business-units/bafar-foods/consumer-products-division/burr/"
+              >
+                <span class="brand-logo"
+                  ><img
+                    src="https://cdn-lmhcj.nitrocdn.com/bqSdngDrbfqwEehFrDAzuumqaIljTbhD/assets/images/optimized/rev-14ecd9b/grupobafar.com/wp-content/uploads/2017/12/BURR.png"
+                    alt=""
+                    loading="lazy"
+                /></span>
+                <span class="brand-name">Burr</span>
+              </a>
+              <a
+                href="https://grupobafar.com/en/business-units/bafar-foods/consumer-products-division/pery/"
+              >
+                <span class="brand-logo"
+                  ><img
+                    src="https://cdn-lmhcj.nitrocdn.com/bqSdngDrbfqwEehFrDAzuumqaIljTbhD/assets/images/optimized/rev-14ecd9b/grupobafar.com/wp-content/uploads/2017/12/PERY.png"
+                    alt=""
+                    loading="lazy"
+                /></span>
+                <span class="brand-name">Pery</span>
+              </a>
+              <a
+                href="https://grupobafar.com/en/business-units/bafar-foods/consumer-products-division/ponderosa/"
+              >
+                <span class="brand-logo"
+                  ><img
+                    src="https://cdn-lmhcj.nitrocdn.com/bqSdngDrbfqwEehFrDAzuumqaIljTbhD/assets/images/optimized/rev-14ecd9b/grupobafar.com/wp-content/uploads/2024/04/Logos-Ponderosa-2.png"
+                    alt=""
+                    loading="lazy"
+                /></span>
+                <span class="brand-name">Ponderosa</span>
+              </a>
+              <a
+                href="https://grupobafar.com/en/business-units/bafar-foods/consumer-products-division/tres-castillos/"
+              >
+                <span class="brand-logo"
+                  ><img
+                    src="https://cdn-lmhcj.nitrocdn.com/bqSdngDrbfqwEehFrDAzuumqaIljTbhD/assets/images/optimized/rev-14ecd9b/grupobafar.com/wp-content/uploads/2024/04/Logos-Tres-Castillos.png"
+                    alt=""
+                    loading="lazy"
+                /></span>
+                <span class="brand-name">Tres Castillos</span>
+              </a>
+              <a
+                href="https://grupobafar.com/en/business-units/bafar-foods/consumer-products-division/montebello/"
+              >
+                <span class="brand-logo"
+                  ><img
+                    src="https://cdn-lmhcj.nitrocdn.com/bqSdngDrbfqwEehFrDAzuumqaIljTbhD/assets/images/optimized/rev-14ecd9b/grupobafar.com/wp-content/uploads/2017/12/MONTEBELLO.png"
+                    alt=""
+                    loading="lazy"
+                /></span>
+                <span class="brand-name">Montebello</span>
+              </a>
+            </div>
+          </div>
+          <div class="brand-group">
+            <h3>Retail</h3>
+            <div class="brand-grid retail">
+              <a
+                href="https://grupobafar.com/en/business-units/bafar-foods/retail-division/bif/"
+              >
+                <span class="brand-logo"
+                  ><img
+                    src="https://cdn-lmhcj.nitrocdn.com/bqSdngDrbfqwEehFrDAzuumqaIljTbhD/assets/images/optimized/rev-14ecd9b/grupobafar.com/wp-content/uploads/2017/12/BIF.png"
+                    alt=""
+                    loading="lazy"
+                /></span>
+                <span class="brand-name">BIF</span>
+              </a>
+              <a
+                href="https://grupobafar.com/en/business-units/bafar-foods/retail-division/carnemart/"
+              >
+                <span class="brand-logo"
+                  ><img
+                    src="https://cdn-lmhcj.nitrocdn.com/bqSdngDrbfqwEehFrDAzuumqaIljTbhD/assets/images/optimized/rev-14ecd9b/grupobafar.com/wp-content/uploads/2017/12/CARNEMART.png"
+                    alt=""
+                    loading="lazy"
+                /></span>
+                <span class="brand-name">Carnemart</span>
+              </a>
+              <a
+                href="https://grupobafar.com/en/business-units/bafar-foods/retail-division/la-pastora/"
+              >
+                <span class="brand-logo"
+                  ><img
+                    src="https://cdn-lmhcj.nitrocdn.com/bqSdngDrbfqwEehFrDAzuumqaIljTbhD/assets/images/optimized/rev-14ecd9b/grupobafar.com/wp-content/uploads/2017/12/LA_PASTORA-e1513870687513.png"
+                    alt=""
+                    loading="lazy"
+                /></span>
+                <span class="brand-name">La Pastora</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Social responsibility -->
+      <section class="section csr">
+        <div class="wrap csr-grid">
+          <div class="csr-img">
+            <img
+              src="https://grupobafar.com/wp-content/uploads/2024/02/Fundacion-Grupo-Bafar.png"
+              alt="Bafar Group Foundation"
+              loading="lazy"
+            />
+          </div>
+          <div>
+            <div class="eyebrow">Social responsibility</div>
+            <h2>Growing with our communities.</h2>
+            <p>
+              Through food, education, sports, values, health and care for the
+              environment, we invest in the Mexico we want to build.
+            </p>
+            <ul class="csr-list">
+              <li>
+                <a
+                  href="https://grupobafar.com/en/social-responsibility/bafar-group-foundation/"
+                  >Bafar Group Foundation <span aria-hidden="true">→</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://grupobafar.com/en/social-responsibility/b-energy/"
+                  >B-Energy <span aria-hidden="true">→</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://grupobafar.com/en/social-responsibility/kinetics-division/"
+                  >Wildlife Conservation <span aria-hidden="true">→</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://grupobafar.com/en/social-responsibility/integridad-corporativa/"
+                  >Corporate Integrity <span aria-hidden="true">→</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://grupobafar.com/en/social-responsibility/educational-football-program/"
+                  >Educational Football Program
+                  <span aria-hidden="true">→</span></a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section class="contact-band">
+        <div class="wrap">
+          <div class="contact-card">
+            <div>
+              <h2>Stay in touch</h2>
+              <p>Thanks for visiting. Our mission is to serve you.</p>
+            </div>
+            <div class="contact-lines">
+              <a href="tel:018006277705"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"
+                  /></svg
+                >01-800-627-7705</a
+              >
+              <a href="mailto:atencionclientes@bafar.com.mx"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <rect x="2" y="4" width="20" height="16" rx="2" />
+                  <path d="m22 7-10 6L2 7" /></svg
+                >atencionclientes@bafar.com.mx</a
+              >
+              <a
+                class="btn btn-navy"
+                href="https://grupobafar.com/en/contact/"
+                style="border: 0; color: #fff"
+                >Contact us</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div class="foot-grid">
+          <div class="foot-brand">
+            <a
+              class="logo"
+              href="https://grupobafar.com/en/"
+              aria-label="Grupo Bafar — home"
+              ><svg class="logo-mark" aria-hidden="true" focusable="false">
+                <use href="#bafar-mark" /></svg
+              ><span class="logo-word">GRUPO <span>BAFAR</span></span></a
+            >
+            <p>
+              One of Mexico's leading food companies, fueling the country's
+              progress for more than 35 years.
+            </p>
+          </div>
+          <div>
+            <h4>Company</h4>
+            <ul>
+              <li>
+                <a href="https://grupobafar.com/en/who-are-we/">Who we are</a>
+              </li>
+              <li>
+                <a href="https://grupobafar.com/en/who-are-we/history/"
+                  >History</a
+                >
+              </li>
+              <li>
+                <a href="https://grupobafar.com/en/who-are-we/bafar-way/"
+                  >News and events</a
+                >
+              </li>
+              <li><a href="https://grupobafar.com/en/careers/">Careers</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Business</h4>
+            <ul>
+              <li>
+                <a href="https://grupobafar.com/en/business-units/"
+                  >Business units</a
+                >
+              </li>
+              <li>
+                <a href="https://inversionistas.grupobafar.com/en/"
+                  >Investors</a
+                >
+              </li>
+              <li>
+                <a href="https://grupobafar.com/en/social-responsibility/"
+                  >Social responsibility</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4>Contact</h4>
+            <ul>
+              <li><a href="https://grupobafar.com/en/contact/">Contact</a></li>
+              <li><a href="tel:018006277705">01-800-627-7705</a></li>
+              <li>
+                <a href="mailto:atencionclientes@bafar.com.mx"
+                  >atencionclientes@bafar.com.mx</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="foot-bottom">
+          <span>© Grupo Bafar</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 20px">
+            <a href="https://grupobafar.com/en/contact/site-map/">Site map</a>
+            <a
+              href="https://grupobafar.com/en/contact/legal-and-privacy-notice/"
+              >Legal and privacy notice</a
+            >
+            <a href="https://grupobafar.com/en/contact/bafar-transparent/"
+              >Bafar Transparent</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        // Mobile menu
+        var btn = document.querySelector(".menu-btn"),
+          nav = document.getElementById("nav");
+        btn.addEventListener("click", function () {
+          var open = nav.classList.toggle("open");
+          btn.setAttribute("aria-expanded", open);
+          btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+        });
+        // Mobile: first tap on a parent item expands its submenu
+        nav.querySelectorAll(".nav > ul > li").forEach(function (li) {
+          var link = li.querySelector(".nav-link"),
+            sub = li.querySelector(".dropdown");
+          if (!sub) return;
+          link.addEventListener("click", function (e) {
+            if (
+              window.matchMedia("(max-width:1060px)").matches &&
+              !li.classList.contains("expanded")
+            ) {
+              e.preventDefault();
+              li.classList.add("expanded");
+            }
+          });
+        });
+
+        // Hero tabs + autoplay
+        var tabs = Array.prototype.slice.call(
+          document.querySelectorAll(".hero-tabs [role=tab]"),
+        );
+        var slides = tabs.map(function (t) {
+          return document.getElementById(t.getAttribute("aria-controls"));
+        });
+        var current = 0,
+          timer = null;
+        var reduce = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+        var more = document.getElementById("hero-more");
+        function show(i, focus) {
+          tabs.forEach(function (t, j) {
+            var on = j === i;
+            t.setAttribute("aria-selected", on);
+            t.tabIndex = on ? 0 : -1;
+            if (on) slides[j].removeAttribute("aria-hidden");
+            else slides[j].setAttribute("aria-hidden", "true");
+            slides[j].classList.toggle("active", on);
+          });
+          more.href = tabs[i].getAttribute("data-href");
+          more.textContent =
+            "Explore " + tabs[i].querySelector(".lbl").textContent + " →";
+          if (focus) tabs[i].focus();
+          current = i;
+        }
+        function start() {
+          if (!reduce) {
+            stop();
+            timer = setInterval(function () {
+              show((current + 1) % tabs.length);
+            }, 6000);
+          }
+        }
+        function stop() {
+          if (timer) clearInterval(timer);
+        }
+        tabs.forEach(function (t, i) {
+          t.addEventListener("click", function () {
+            show(i);
+            stop();
+          });
+          t.addEventListener("keydown", function (e) {
+            if (e.key === "ArrowRight") {
+              show((i + 1) % tabs.length, true);
+              stop();
+            }
+            if (e.key === "ArrowLeft") {
+              show((i - 1 + tabs.length) % tabs.length, true);
+              stop();
+            }
+          });
+        });
+        var media = document.getElementById("hero-media");
+        media.addEventListener("mouseenter", stop);
+        media.addEventListener("mouseleave", start);
+        start();
+      })();
+    </script>
+  </body>
+</html>
